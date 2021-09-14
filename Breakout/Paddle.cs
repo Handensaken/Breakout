@@ -1,0 +1,55 @@
+using System;
+using SFML.Window;
+using SFML.System;
+using SFML.Graphics;
+
+namespace Breakout
+{
+    public class Paddle : GameObject
+    {
+
+
+        public const float Height = 25.0f;
+        public const float Width = 100.0f;
+        public Sprite sprite;
+        public Paddle()
+        {
+            sprite = new Sprite();
+            sprite.Texture = new Texture(@"assets/paddle.png");
+            sprite.Position = new Vector2f(Program.ScreenW / 2, Program.ScreenH - 50);
+            Vector2f paddleTextureSize = (Vector2f)sprite.Texture.Size;
+            sprite.Origin = 0.5f * paddleTextureSize;
+            sprite.Scale = new Vector2f(
+                Width / paddleTextureSize.X,
+                Height / paddleTextureSize.Y
+            );
+        }
+        public override void Update(float deltaTime)
+        {
+            var newPos = sprite.Position;
+            Move(newPos, deltaTime);
+        }
+        private void Move(Vector2f newPos, float deltaTime)
+        {
+            if (newPos.X <= Program.ScreenW - Width / 2)
+            {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Right) || Keyboard.IsKeyPressed(Keyboard.Key.D))
+                {
+                    newPos.X += deltaTime * 300.0f;
+                }
+            }
+            if (newPos.X >= 0 + Width / 2)
+            {
+                if (Keyboard.IsKeyPressed(Keyboard.Key.Left) || Keyboard.IsKeyPressed(Keyboard.Key.A))
+                {
+                    newPos.X -= deltaTime * 300.0f;
+                }
+            }
+            sprite.Position = newPos;
+        }
+        public override void Draw(RenderTarget target)
+        {
+            target.Draw(sprite);
+        }
+    }
+}

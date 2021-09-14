@@ -6,7 +6,7 @@ using SFML.Graphics;
 
 namespace Breakout
 {
-    public class Ball
+    public class Ball : GameObject
     {
         public Sprite sprite;
         public const float Diameter = 20.0f;
@@ -24,7 +24,7 @@ namespace Breakout
                 Diameter / ballTextureSize.Y
             );
         }
-        public void Update(float deltaTime)
+        public override void Update(float deltaTime)
         {
             var newPos = sprite.Position;
             newPos += (direction * deltaTime * 100.0f);
@@ -65,7 +65,7 @@ namespace Breakout
         {
             direction -= normal * (2 * (direction.X * normal.X + direction.Y * normal.Y));
         }
-        public void Draw(RenderTarget target)
+        public override void Draw(RenderTarget target)
         {
             target.Draw(sprite);
         }
