@@ -26,19 +26,14 @@ namespace Breakout
 
 
                     //UPDATE
-                    foreach (GameObject g in gameObjects)
-                    {
-                        g.Update(deltaTime);
-                    }
+                    ball.Update(deltaTime);
+                    paddle.Update(deltaTime, ball);
 
                     window.Clear(new Color(139, 197, 238));
 
                     //DRAW
-                    foreach (GameObject g in gameObjects)
-                    {
-                        g.Draw(window);
-                    }
-
+                    ball.Draw(window);
+                    paddle.Draw(window);
                     window.Display();
                 }
             }

@@ -5,13 +5,14 @@ using SFML.Graphics;
 
 namespace Breakout
 {
-    public class Paddle : GameObject
+    public class Paddle
     {
 
 
         public const float Height = 25.0f;
         public const float Width = 100.0f;
         public Sprite sprite;
+        Vector2f size;
         public Paddle()
         {
             sprite = new Sprite();
@@ -23,11 +24,24 @@ namespace Breakout
                 Width / paddleTextureSize.X,
                 Height / paddleTextureSize.Y
             );
+            size = new Vector2f(
+                sprite.GetGlobalBounds().Width,
+                sprite.GetGlobalBounds().Height
+            );
         }
-        public override void Update(float deltaTime)
+        public void Update(float deltaTime, Ball ball)
         {
             var newPos = sprite.Position;
             Move(newPos, deltaTime);
+
+
+            if (Collision.CircleRectangle(ball.sprite.Position, Ball.Radius, this.sprite.Position, size, out Vector2f hit))
+            {
+                ball.sprite.Position += hit;
+                ball.Reflect(hit.Normalized());
+            }
+
+
         }
         private void Move(Vector2f newPos, float deltaTime)
         {
@@ -47,7 +61,7 @@ namespace Breakout
             }
             sprite.Position = newPos;
         }
-        public override void Draw(RenderTarget target)
+        public void Draw(RenderTarget target)
         {
             target.Draw(sprite);
         }
